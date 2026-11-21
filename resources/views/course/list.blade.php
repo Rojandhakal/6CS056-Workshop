@@ -1,71 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Course List</title>
-</head>
-<body>
 
-    <h1>All Courses</h1>
+<x-layouts.app title="Courses">
 
-    @if(session('success'))
-        <p style="color: green;">
-            {{ session('success') }}
-        </p>
-    @endif
+    <div class="card">
 
-    <a href="/courses/create">Register New Course</a>
+        <h1>All Courses</h1>
 
-    <br><br>
+        <a href="{{ route('courses.create') }}" class="btn btn-primary">
+            + Register New Course
+        </a>
 
-    @if($courses->count() > 0)
+        <br><br>
 
-        <table border="1" cellpadding="10"><th>Actions</th>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Duration (Weeks)</th>
-                    <th>Fee</th>
-                    <th>Difficulty</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+        @if($courses->isEmpty())
 
-            <tbody>
-                @foreach($courses as $course)
+            <p>No courses registered yet.</p>
+
+        @else
+
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ $course->id }}</td>
-                        <td>{{ $course->name }}</td>
-                        <td>{{ $course->description }}</td>
-                        <td>{{ $course->duration }}</td>
-                        <td>{{ $course->fee }}</td>
-                        <td>{{ $course->difficulty }}</td>
-                        <td>
-                            {{ $course->is_active ? 'Active' : 'Inactive' }}
-                        </td>
-                        <td>
-                            <a href="/courses/{{ $course->id }}/edit">Edit</a>
-
-                            <form action="/courses/{{ $course->id }}"
-                                method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit"
-                                        onclick="return confirm('Are you sure you want to delete this course?')">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Duration (Weeks)</th>
+                        <th>Fee</th>
+                        <th>Difficulty</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
 
-    @else
-        <p>No courses registered yet.</p>
-    @endif
+                <tbody>
+                    @foreach($courses as $course)
+                        <tr>
+                            <td>{{ $course->id }}</td>
+                            <td>{{ $course->name }}</td>
+                            <td>{{ $course->description ?? 'N/A' }}</td>
+                            <td>{{ $course->duration }}</td>
+                            <td>{{ $course->fee }}</td>
+                            <td>{{ $course->difficulty }}</td>
 
-</body>
-</html>
+                            <td>
+                                {{ $course->is_active ? 'Active' : 'Inactive' }}
+                            </td>
+
+                            <td>
+                                <div class="actions">
+
+                                    <a href="{{ route('courses.show', $course) }}"
+                                       class="btn btn-secondary">
+                                        View
+                                    </a>
+
+                                    <a href="{{ route('courses.edit', $course) }}"
+                                       class="btn btn-warning">
+                                        Edit
+                                    </a>
+
+                                    <x-delete-form
+                                        :action="route('courses.destroy', $course)"
+                                    />
+
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+        @endif
+
+    </div>
+
+</x-layouts.app>

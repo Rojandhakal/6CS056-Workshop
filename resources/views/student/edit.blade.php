@@ -1,60 +1,28 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Student</title>
-</head>
-<body>
+<x-layouts.app title="Edit Student">
 
-    <h1>Edit Student Information</h1>
+    <div class="card">
 
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        <h1>Edit Student</h1>
 
-    <form action="/students/{{ $student->id }}" method="POST">
+        <form action="{{ route('students.update', $student) }}" method="POST">
 
-        @csrf
-        @method('PUT')
+            @csrf
+            @method('PUT')
 
-        <label>Full Name:</label><br>
-        <input type="text" name="name"
-               value="{{ old('name', $student->name) }}" required>
-        <br><br>
+            <x-students.form
+                :student="$student"
+                buttonText="Update Student"
+            />
 
-        <label>Email:</label><br>
-        <input type="email" name="email"
-               value="{{ old('email', $student->email) }}" required>
-        <br><br>
+        </form>
 
-        <label>Phone:</label><br>
-        <input type="text" name="phone"
-               value="{{ old('phone', $student->phone) }}" required>
-        <br><br>
+        <br>
 
-        <label>Address:</label><br>
-        <textarea name="address">{{ old('address', $student->address) }}</textarea>
-        <br><br>
+        <a href="{{ route('students.index') }}" class="btn btn-secondary">
+            Back to Students
+        </a>
 
-        <label>Date of Birth:</label><br>
-        <input type="date" name="date_of_birth"
-               value="{{ old('date_of_birth', $student->date_of_birth) }}">
-        <br><br>
+    </div>
 
-        <button type="submit">Update Student</button>
-
-    </form>
-
-    <br>
-    <a href="/students">Back to Student List</a>
-
-</body>
-</html>
+</x-layouts.app>

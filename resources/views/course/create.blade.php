@@ -1,64 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register Course</title>
-</head>
-<body>
 
-    <h1>Register New Course</h1>
+<x-layouts.app title="Register Course">
 
-    @if(session('success'))
-        <p style="color: green;">
-            {{ session('success') }}
-        </p>
-    @endif
+    <div class="card">
 
-    @if($errors->any())
-        <ul style="color: red;">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
+        <h1>Register New Course</h1>
 
-    <form action="/courses" method="POST">
-        @csrf
+        <form action="{{ route('courses.store') }}" method="POST">
 
-        <label>Course Name:</label><br>
-        <input type="text" name="name" value="{{ old('name') }}" required>
-        <br><br>
+            @csrf
 
-        <label>Description:</label><br>
-        <textarea name="description">{{ old('description') }}</textarea>
-        <br><br>
+            <x-courses.form
+                :course="$course"
+                buttonText="Register Course"
+            />
 
-        <label>Duration (Weeks):</label><br>
-        <input type="number" name="duration" value="{{ old('duration') }}" min="1" required>
-        <br><br>
+        </form>
 
-        <label>Fee:</label><br>
-        <input type="number" name="fee" value="{{ old('fee') }}" min="0" step="0.01" required>
-        <br><br>
+        <br>
 
-        <label>Difficulty:</label><br>
-        <select name="difficulty" required>
-            <option value="">Select Difficulty</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-        </select>
-        <br><br>
+        <a href="{{ route('courses.index') }}" class="btn btn-secondary">
+            Back to Courses
+        </a>
 
-        <label>Active Status:</label><br>
-        <select name="is_active" required>
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
-        </select>
-        <br><br>
+    </div>
 
-        <button type="submit">Register Course</button>
-
-    </form>
-
-</body>
-</html>
+</x-layouts.app>

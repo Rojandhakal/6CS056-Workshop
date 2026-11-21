@@ -1,58 +1,27 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Student</title>
-</head>
-<body>
+<x-layouts.app title="Register Student">
 
-    <h1>Student Registration Form</h1>
+    <div class="card">
 
-    @if (session('success'))
-        <p style="color: green;">
-            {{ session('success') }}
-        </p>
-    @endif
+        <h1>Register New Student</h1>
 
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        <form action="{{ route('students.store') }}" method="POST">
 
-    <form action="/students" method="POST">
+            @csrf
 
-        @csrf
+            <x-students.form
+                :student="$student"
+                buttonText="Register Student"
+            />
 
-        <label>Full Name:</label><br>
-        <input type="text" name="name" value="{{ old('name') }}" required>
-        <br><br>
+        </form>
 
-        <label>Email:</label><br>
-        <input type="email" name="email" value="{{ old('email') }}" required>
-        <br><br>
+        <br>
 
-        <label>Phone:</label><br>
-        <input type="text" name="phone" value="{{ old('phone') }}" required>
-        <br><br>
+        <a href="{{ route('students.index') }}" class="btn btn-secondary">
+            Back to Students
+        </a>
 
-        <label>Address:</label><br>
-        <textarea name="address">{{ old('address') }}</textarea>
-        <br><br>
+    </div>
 
-        <label>Date of Birth:</label><br>
-        <input type="date" name="date_of_birth" value="{{ old('date_of_birth') }}">
-        <br><br>
-
-        <button type="submit">Register Student</button>
-
-    </form>
-
-</body>
-</html>
+</x-layouts.app>
