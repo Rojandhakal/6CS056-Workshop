@@ -7,9 +7,6 @@ use App\Http\Controllers\CourseController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-// Course resource routes
 Route::resource('courses', CourseController::class);
 
-// Student resource routes
 Route::resource('students', StudentController::class);
